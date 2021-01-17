@@ -2,5 +2,5 @@
 VRChat-Friend-Manager! Checking your online freind list
 
 
-Making...
+Making...  
 Nothing Sorry
