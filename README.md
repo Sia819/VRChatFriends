@@ -1,5 +1,5 @@
 # VRChatFriends
-This is VRChat FriendManager!
+This is VRChat FriendManager!  
 You can check some your online freind list
 
 
