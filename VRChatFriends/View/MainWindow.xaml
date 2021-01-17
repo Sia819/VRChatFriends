@@ -11,8 +11,8 @@
         <viewmodel:MainWindowViewModel/>
     </Window.DataContext>
     <Grid>
-        <Canvas>
+        <Frame Source="{Binding FrameSource}">
             
-        </Canvas>
+        </Frame>
     </Grid>
 </Window>

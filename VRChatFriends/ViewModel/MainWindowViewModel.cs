@@ -8,9 +8,12 @@ namespace VRChatFriends.ViewModel
 {
     public class MainWindowViewModel
     {
+        public string FrameSource { get; set; }
+
         public MainWindowViewModel()
         {
-
+            VRChatFriends.Common.Startup.Run();
+            
         }
 
     }
