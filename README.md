@@ -1,5 +1,6 @@
 # VRChatFriends
-VRChat-Friend-Manager! Checking your online freind list
+This is VRChat FriendManager!
+You can check some your online freind list
 
 
 Making...  
