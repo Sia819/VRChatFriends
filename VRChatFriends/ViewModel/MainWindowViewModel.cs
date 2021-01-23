@@ -8,13 +8,19 @@ namespace VRChatFriends.ViewModel
 {
     public class MainWindowViewModel
     {
-        public string FrameSource { get; set; }
+        public Uri PageNavigation { get; set; }
 
         public MainWindowViewModel()
         {
             VRChatFriends.Common.Startup.Run();
-            
+            if (Global.properties.IsAutoLogin)
+            {
+                // TODO : goto friendList
+            }
+            else
+            {
+                PageNavigation = new Uri("pack://application:,,,/View/LoginPage.xaml");
+            }
         }
-
     }
 }

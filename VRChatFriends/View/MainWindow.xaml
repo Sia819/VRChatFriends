@@ -6,13 +6,32 @@
         xmlns:local="clr-namespace:VRChatFriends"
         xmlns:viewmodel="clr-namespace:VRChatFriends.ViewModel"
         mc:Ignorable="d"
+        WindowStyle="None" 
+        
         Title="MainWindow" Height="450" Width="400">
     <Window.DataContext>
         <viewmodel:MainWindowViewModel/>
     </Window.DataContext>
     <Grid>
-        <Frame Source="{Binding FrameSource}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+        </Grid>
+        
+        <Frame Source="{Binding PageNavigation}" Grid.Row="1">
             
         </Frame>
     </Grid>
 </Window>
+
+    

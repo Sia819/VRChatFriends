@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using VRChatFriends.Common;
 
-namespace VRChatFriends.Common
+namespace VRChatFriends
 {
     static class Global
     {
