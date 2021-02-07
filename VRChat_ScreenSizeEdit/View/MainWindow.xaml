@@ -13,7 +13,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -38,7 +39,27 @@
                 Margin="10"
                 FontSize="50"
                 Command="{Binding Change_Button}">
-            
         </Button>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox IsChecked="{Binding IsTimerOn}" 
+                      Content="is on?"
+                      FontSize="50"/>
+            <TextBlock Text="{Binding TimerCounted}"
+                       FontSize="50"/>
+            <Button Grid.Column="1"
+                    Content="Timer"
+                    Margin="10"
+                    FontSize="50"
+                    Command="{Binding Timer_Button}" />
+
+
+        </Grid>
+        
     </Grid>
 </Window>
