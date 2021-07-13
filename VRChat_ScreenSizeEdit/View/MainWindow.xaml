@@ -4,62 +4,155 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VRChat_ScreenSizeEdit"
+        xmlns:behavior="clr-namespace:VRChat_ScreenSizeEdit.Behavior"
+        xmlns:converter="clr-namespace:VRChat_ScreenSizeEdit.Converter"
         xmlns:vm="clr-namespace:VRChat_ScreenSizeEdit.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <converter:ResolutionConverter x:Key="resConverter" />
+    </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="70"/>
-            <RowDefinition Height="200"/>
-            <RowDefinition Height="100"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0"
+                <TextBox Grid.Column="0"
                      Text="{Binding XAxis}"
                      Margin="5"
                      FontSize="30"/>
-            <TextBox Grid.Column="1"
+                <TextBox Grid.Column="1"
                      Text="{Binding YAxis}"
                      Margin="5"
                      FontSize="30"/>
 
-        </Grid>
+            </Grid>
 
-        <Button Grid.Row="1"
+            <Button Grid.Row="1"
                 Content="Change"
                 Margin="10"
                 FontSize="50"
                 Command="{Binding Change_Button}">
-        </Button>
+            </Button>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <CheckBox IsChecked="{Binding IsTimerOn}" 
-                      Content="is on?"
-                      FontSize="50"/>
-            <TextBlock Text="{Binding TimerCounted}"
-                       FontSize="50"/>
-            <Button Grid.Column="1"
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <CheckBox IsChecked="{Binding IsTimerOn}" 
+                              Grid.Column="0" Grid.Row="0" Margin="5"
+                              Content="Running State"/> 
+                    <TextBlock Text="{Binding TimerCounted}"
+                               Grid.Column="0" Grid.Row="1" Margin="5"
+                               FontSize="50"/>
+                </Grid>
+                
+                <Button Grid.Column="1"
                     Content="Timer"
                     Margin="10"
                     FontSize="50"
                     Command="{Binding Timer_Button}" />
+            </Grid>
 
+            <CheckBox IsChecked="{Binding IsExcludeSize}"
+                      Grid.Column="0" Grid.Row="3"
+                      Content="Exclude Title Bar Size"
+                      />
+            <Button Command="{Binding Debug_Button}" 
+                    Grid.Column="0" Grid.Row="3" Width="20" Height="20"
+                    
+                    Content="Debug"/>
 
         </Grid>
-        
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="22"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Text="{Binding AddRes_Width}"
+                         Grid.Column="0" Grid.Row="0" Margin="5 0 1 0" 
+                         Height="25" 
+                         />
+                <TextBox Text="{Binding AddRes_Height}"
+                         Grid.Column="2" Grid.Row="0" Margin="1 0 5 0" 
+                         Height="25"
+                         behavior:TextBoxFocusSelectAll.SelectTextOnFocus="True"/>
+                <TextBlock Grid.Column="1" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                           Text="X"/>
+                <Button Command="{Binding Add_Button}"
+                        Grid.Column="3" Grid.Row="0" Margin="0,2,5,0" 
+                        Content="Add" Height="36" VerticalAlignment="Top" 
+                        />
+
+                <Button Command="{Binding Remove_Button}"
+                        Grid.Column="4" Grid.Row="0" Margin="0,2,5,0" 
+                        Content="Remove" Height="36" VerticalAlignment="Top" 
+                        />
+
+                <Grid Grid.Column="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button Command="{Binding Up_Button}" 
+                            Grid.Row="0" Margin="0 2 5 1">
+                        <TextBlock Text="▲" VerticalAlignment="Bottom" />
+                    </Button>
+                    <Button Command="{Binding Down_Button}" 
+                            Grid.Row="1" Margin="0 1 5 2">
+                        <TextBlock Text="▼" VerticalAlignment="Bottom"/>
+                    </Button>
+                </Grid>
+
+            </Grid>
+
+            <ListBox Grid.Row="1" 
+                     ItemsSource="{Binding Resolutions}" 
+                     SelectedIndex="{Binding List_SelectedIndex}"
+                     >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource resConverter}}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+        </Grid>
+
     </Grid>
+
 </Window>
