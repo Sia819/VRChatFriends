@@ -87,21 +87,40 @@ namespace VRChat_ScreenSizeEdit.ViewModel
         #region Command Function
         private void Change_Button_Commnad()
         {
-            try
+            var rect = new Rectangle();
+            IntPtr winPtr;
+            GetWindowRect(winPtr = FindWindow(null, "vrchat"), ref rect);
+            if (winPtr != IntPtr.Zero)
             {
-                IntPtr windowHandle = FindWindow(null, "vrchat");
-                EnableWindow(windowHandle, true);
+                bool needChangeSize;
+                if (IsExcludeSize)
+                    needChangeSize = rect.Width - rect.Left != XAxis + XAxis_Exclude || rect.Height - rect.Top != YAxis + YAxis_Exclude;
+                else
+                    needChangeSize = rect.Width - rect.Left != XAxis || rect.Height - rect.Top != YAxis;
 
-                int Width = XAxis;
-                int Height = YAxis;
-                // no move window posision
-                //SetWindowPos(windowHandle, IntPtr.Zero, 0, 0, Width, Height, SWP_NOMOVE);
-                // move window posision to 0, 0
-                SetWindowPos(windowHandle, IntPtr.Zero, 0, 0, Width, Height, 0);
-            }
-            catch (FormatException)
-            {
-                System.Windows.MessageBox.Show("크기와 위치변경을 하려는 창을 클릭 해 주세요!");
+                // change vrchat window size
+                if (needChangeSize)
+                {
+                    if (IsExcludeSize)
+                    {
+                        if (XAxis_Exclude == -1) // checking "XAxis_Exclude" is not yet decided
+                        {
+                            var clientSize = new Rectangle();
+                            GetClientRect(FindWindow(null, "vrchat"), ref clientSize);
+                            XAxis_Exclude = (rect.Width - rect.Left) - clientSize.Width;
+                            YAxis_Exclude = (rect.Height - rect.Top) - clientSize.Height;
+                        }
+                        SetWindowPos(FindWindow(null, "vrchat"),
+                                        IntPtr.Zero,
+                                        0,
+                                        0,
+                                        XAxis + XAxis_Exclude,
+                                        YAxis + YAxis_Exclude,
+                                        0);
+                    }
+                    else
+                        SetWindowPos(FindWindow(null, "vrchat"), IntPtr.Zero, 0, 0, XAxis, YAxis, 0);
+                }
             }
         }
         private void Timer_Button_Commnad()
@@ -177,34 +196,7 @@ namespace VRChat_ScreenSizeEdit.ViewModel
         private void Timer_Tick(object sender, EventArgs e)
         {
             TimerCounted = TimerCounted + 1;
-            var rect = new Rectangle();
-            IntPtr winPtr;
-            GetWindowRect(winPtr = FindWindow(null, "vrchat"), ref rect);
-            if (winPtr != IntPtr.Zero)
-                if (rect.Width - rect.Left != XAxis || rect.Height - rect.Top != YAxis)
-                {
-                    //Change_Button_Commnad();
-                    if (IsExcludeSize)
-                    {
-                        if (XAxis_Exclude == -1)
-                        {
-                            var clientSize = new Rectangle();
-                            GetClientRect(FindWindow(null, "vrchat"), ref clientSize);
-                            XAxis_Exclude = (rect.Width - rect.Left) - clientSize.Width;
-                            YAxis_Exclude = (rect.Height - rect.Top) - clientSize.Height;
-                        }
-                        SetWindowPos(FindWindow(null, "vrchat"), 
-                                        IntPtr.Zero, 
-                                        0, 
-                                        0, 
-                                        XAxis + XAxis_Exclude, 
-                                        YAxis + YAxis_Exclude, 
-                                        0);
-                    }
-                    else
-                        SetWindowPos(FindWindow(null, "vrchat"), IntPtr.Zero, 0, 0, XAxis, YAxis, 0);
-
-                }
+            Change_Button_Commnad();
         }
         private void CollectionChangedEvent(object o, EventArgs e)
         {
